@@ -10,8 +10,6 @@ public class Employee implements Serializable {
     @Column(nullable = false,updatable = false)
     private Long id;
     private String password;
-    @Column(nullable = false,updatable = false)
-    private String empCode;
     private String name;
     private String gender;
     private String email;
@@ -23,10 +21,9 @@ public class Employee implements Serializable {
     public Employee() {
     }
 
-    public Employee(Long id, String password, String empCode, String name, String gender, String email, String phone, String ic, String role, String imageUrl) {
+    public Employee(Long id, String password, String name, String gender, String email, String phone, String ic, String role, String imageUrl) {
         this.id = id;
         this.password = password;
-        this.empCode = empCode;
         this.name = name;
         this.gender = gender;
         this.email = email;
@@ -50,14 +47,6 @@ public class Employee implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getEmpCode() {
-        return empCode;
-    }
-
-    public void setEmpCode(String empCode) {
-        this.empCode = empCode;
     }
 
     public String getName() {
@@ -121,7 +110,6 @@ public class Employee implements Serializable {
         return "Employee{" +
                 "id=" + id +
                 ", password='" + password + '\'' +
-                ", empCode='" + empCode + '\'' +
                 ", name='" + name + '\'' +
                 ", gender='" + gender + '\'' +
                 ", email='" + email + '\'' +
