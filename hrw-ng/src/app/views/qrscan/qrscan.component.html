@@ -1,0 +1,16 @@
+<p>qrscan works!</p>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <zxing-scanner *ngIf="scannerEnabled" #scanner (scanSuccess)="scanSuccessHandler($event)">
+            </zxing-scanner>
+        </div>
+        <div class="col-md-3">
+            <button (click)="enableScanner()" *ngIf="!scannerEnabled" type="button"
+            class="btn btn-success">Read Other</button>
+            <div>{{information}}</div>
+        </div>
+        
+    </div>
+</div>
