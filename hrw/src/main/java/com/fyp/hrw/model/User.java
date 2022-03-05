@@ -2,35 +2,43 @@ package com.fyp.hrw.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-public class Employee implements Serializable {
+public class User implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false,updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, updatable = false)
     private Long id;
+    @Column(nullable = false, updatable = false, unique = true)
+    private String username;
     private String password;
     private String name;
     private String gender;
+    @Column(unique = true)
     private String email;
     private String phone;
     private String ic;
-    private String role;
-    private String imageUrl;
+    private String address;
 
-    public Employee() {
-    }
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private ERole role;
 
-    public Employee(Long id, String password, String name, String gender, String email, String phone, String ic, String role, String imageUrl) {
-        this.id = id;
+    public User(String username, String password, String name, String gender, String email, String phone, String ic, String address, ERole role) {
+        this.username = username;
         this.password = password;
         this.name = name;
         this.gender = gender;
         this.email = email;
         this.phone = phone;
         this.ic = ic;
+        this.address = address;
         this.role = role;
-        this.imageUrl = imageUrl;
+    }
+
+    public User() {
     }
 
     public Long getId() {
@@ -89,34 +97,27 @@ public class Employee implements Serializable {
         this.ic = ic;
     }
 
-    public String getRole() {
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public ERole getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(ERole role) {
         this.role = role;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    @Override
-    public String toString() {
-        return "Employee{" +
-                "id=" + id +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", gender='" + gender + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", ic='" + ic + '\'' +
-                ", role='" + role + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
-                '}';
     }
 }
