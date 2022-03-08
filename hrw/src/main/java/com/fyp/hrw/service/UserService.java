@@ -1,13 +1,12 @@
 package com.fyp.hrw.service;
 
-import com.fyp.hrw.exception.UserNotFoundException;
+import com.fyp.hrw.exception.RecordNotFoundException;
 import com.fyp.hrw.model.User;
 import com.fyp.hrw.repo.IUserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -37,7 +36,7 @@ public class UserService {
     }
 
     public User findUserByUsername(String username) {
-        return iUserRepo.findUserByUsername(username).orElseThrow(() -> new UserNotFoundException("User Not Found"));
+        return iUserRepo.findUserByUsername(username).orElseThrow(() -> new RecordNotFoundException("User Not Found"));
     }
 
     public void deleteEmployeeByUsername(String username) {

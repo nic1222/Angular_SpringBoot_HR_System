@@ -1,0 +1,349 @@
+<div class="row">
+  <div class="col-md-2"></div>
+  <div class="col-md-8">
+    <nb-card>
+      <nb-card-header>Add User</nb-card-header>
+      <nb-card-body>
+        <form
+          #addForm="ngForm"
+          class="form-horizontal"
+          (ngSubmit)="onSubmit(addForm)"
+        >
+          <div class="form-group row">
+            <label for="username" class="label col-sm-3 form-control-label"
+              >Username</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="text"
+                nbInput
+                fullWidth
+                [(ngModel)]="username"
+                #usernameInput="ngModel"
+                name="username"
+                id="username"
+                placeholder="Employee Code"
+                required
+              />
+            </div>
+          </div>
+          <div
+            class="form-group row"
+            *ngIf="
+              usernameInput.invalid &&
+              (usernameInput.touched || usernameInput.dirty)
+            "
+          >
+            <div class="col-sm-3 vertical-center">
+              <span></span>
+            </div>
+            <div class="col-sm-9 vertical-center error_container">
+              <span *ngIf="usernameInput.errors?.required">
+                Username is required.
+              </span>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="password" class="label col-sm-3 form-control-label"
+              >Password</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="password"
+                nbInput
+                fullWidth
+                [(ngModel)]="password"
+                #passwordInput="ngModel"
+                name="password"
+                id="password"
+                placeholder="Password"
+                required
+              />
+            </div>
+          </div>
+          <div
+            class="form-group row"
+            *ngIf="
+              passwordInput.invalid &&
+              (passwordInput.touched || passwordInput.dirty)
+            "
+          >
+            <div class="col-sm-3 vertical-center">
+              <span></span>
+            </div>
+            <div class="col-sm-9 vertical-center error_container">
+              <span *ngIf="passwordInput.errors?.required">
+                Password is required.
+              </span>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="name" class="label col-sm-3 form-control-label"
+              >Name</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="text"
+                nbInput
+                fullWidth
+                [(ngModel)]="name"
+                #nameInput="ngModel"
+                name="name"
+                id="name"
+                placeholder="Name"
+                required
+              />
+            </div>
+          </div>
+          <div
+            class="form-group row"
+            *ngIf="nameInput.invalid && (nameInput.touched || nameInput.dirty)"
+          >
+            <div class="col-sm-3 vertical-center">
+              <span></span>
+            </div>
+            <div class="col-sm-9 vertical-center error_container">
+              <span *ngIf="nameInput.errors?.required">
+                Name is required.
+              </span>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="gender" class="label col-sm-3 form-control-label"
+              >Gender</label
+            >
+            <nb-select
+              class="form-select col-sm-9"
+              [(ngModel)]="gender"
+              #genderInput="ngModel"
+              name="gender"
+              id="gender"
+              aria-label="Default select example"
+              required
+            >
+              <nb-option readonly>Select a Gender</nb-option>
+              <nb-option value="M">Male</nb-option>
+              <nb-option value="F">Female</nb-option>
+            </nb-select>
+          </div>
+          <div
+            class="form-group row"
+            *ngIf="
+              genderInput.invalid && (genderInput.touched || genderInput.dirty)
+            "
+          >
+            <div class="col-sm-3 vertical-center">
+              <span></span>
+            </div>
+            <div class="col-sm-9 vertical-center error_container">
+              <span *ngIf="genderInput.errors?.required">
+                Gender is required.
+              </span>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="email" class="label col-sm-3 form-control-label"
+              >Email</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="email"
+                nbInput
+                fullWidth
+                [(ngModel)]="email"
+                #emailInput="ngModel"
+                name="email"
+                placeholder="Email"
+                pattern="^[a-zA-z0-9._%+-]+@[a-zA-z0-9.-]+\.[a-zA-z]{2,4}$"
+                required
+              />
+            </div>
+          </div>
+          <div
+            class="form-group row"
+            *ngIf="
+              emailInput.invalid && (emailInput.touched || emailInput.dirty)
+            "
+          >
+            <div class="col-sm-3 vertical-center">
+              <span></span>
+            </div>
+            <div class="col-sm-9 vertical-center error_container">
+              <span *ngIf="emailInput.errors?.required">
+                Email is required.
+              </span>
+              <span *ngIf="emailInput.errors?.maxlength">
+                Email exceeded max length 100.
+              </span>
+              <span *ngIf="emailInput.errors?.pattern">
+                Kindly enter valid email address before proceed.
+              </span>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="phone" class="label col-sm-3 form-control-label"
+              >Phone Number</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="text"
+                nbInput
+                fullWidth
+                [(ngModel)]="phone"
+                #phoneInput="ngModel"
+                name="phone1"
+                id="phone1"
+                placeholder="phone"
+                required
+                pattern="^[0-9]*$"
+              />
+            </div>
+          </div>
+          <div
+            class="form-group row"
+            *ngIf="
+              phoneInput.invalid && (phoneInput.touched || phoneInput.dirty)
+            "
+          >
+            <div class="col-sm-3 vertical-center">
+              <span></span>
+            </div>
+            <div class="col-sm-9 vertical-center error_container">
+              <span *ngIf="phoneInput.errors?.required">
+                Phone number is required.
+              </span>
+              <span *ngIf="phoneInput.errors?.pattern">
+                Kindly enter valid phone number before proceed.
+              </span>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="ic" class="label col-sm-3 form-control-label">Ic</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                nbInput
+                fullWidth
+                [(ngModel)]="ic"
+                #icInput="ngModel"
+                name="ic"
+                id="ic"
+                placeholder="ic"
+                required
+                maxlength="12"
+                minlength="12"
+                pattern="^[0-9]*$"
+              />
+            </div>
+          </div>
+          <div
+            class="form-group row"
+            *ngIf="icInput.invalid && (icInput.touched || icInput.dirty)"
+          >
+            <div class="col-sm-3 vertical-center">
+              <span></span>
+            </div>
+            <div class="col-sm-9 vertical-center error_container">
+              <span *ngIf="icInput.errors?.required">
+                IC is required.
+              </span>
+              <span *ngIf="icInput.errors?.pattern">
+                Kindly enter valid IC number before proceed.
+              </span>
+              <span *ngIf="icInput.errors?.minlength">
+                Kindly enter valid IC number before proceed.
+              </span>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="address" class="label col-sm-3 form-control-label"
+              >Address</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="text"
+                nbInput
+                fullWidth
+                [(ngModel)]="address"
+                #addressInput="ngModel"
+                name="address1"
+                id="address1"
+                placeholder="address"
+                required
+              />
+            </div>
+          </div>
+          <div
+            class="form-group row"
+            *ngIf="
+              addressInput.invalid &&
+              (addressInput.touched || addressInput.dirty)
+            "
+          >
+            <div class="col-sm-3 vertical-center">
+              <span></span>
+            </div>
+            <div class="col-sm-9 vertical-center error_container">
+              <span *ngIf="addressInput.errors?.required">
+                Address is required.
+              </span>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="role" class="label col-sm-3 form-control-label"
+              >Role</label
+            >
+            <nb-select
+              class="form-select col-sm-9"
+              [(ngModel)]="role"
+              #roleInput="ngModel"
+              name="role"
+              aria-label="Default select example"
+              required
+            >
+              <nb-option selected>Open this select menu</nb-option>
+              <nb-option value="ROLE_EMP">Employee</nb-option>
+              <nb-option value="ROLE_HR">HR Personnel</nb-option>
+              <nb-option value="ROLE_ADMIN">Admin</nb-option>
+            </nb-select>
+          </div>
+          <div
+            class="form-group row"
+            *ngIf="roleInput.invalid && (roleInput.touched || roleInput.dirty)"
+          >
+            <div class="col-sm-3 vertical-center">
+              <span></span>
+            </div>
+            <div class="col-sm-9 vertical-center error_container">
+              <span *ngIf="roleInput.errors?.required">
+                Role is required.
+              </span>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="offset-sm-3 col-sm-9">
+              <button
+                type="submit"
+                nbButton
+                status="warning"
+                [disabled]="addForm.invalid"
+              >
+                Create
+              </button>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+  <div class="col-md-2"></div>
+</div>

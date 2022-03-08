@@ -14,11 +14,15 @@ import { UserMgmtComponent } from './views/user-mgmt/user-mgmt.component';
 import { LoginComponent } from './views/login/login.component';
 import { LogoutComponent } from './views/logout/logout.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NbThemeModule, NbLayoutModule, NbSidebarModule, NbMenuModule } from '@nebular/theme';
+import { NbActionsModule, NbUserModule, NbThemeModule, NbLayoutModule, NbSidebarModule, NbMenuModule, NbButtonModule, NbIconModule, NbSelectModule, NbCardModule, NbInputModule } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { HeaderComponent } from './views/layouts/header/header.component';
 import { ThemeModule } from './@theme/theme.module';
 import { OneColumnLayoutComponent } from './views/layouts/one-column.layout';
+import { FormsModule } from '@angular/forms';
+import { authInterceptorProviders } from './helpers/auth.interceptor';
+import { UserMgmtAddComponent } from './views/user-mgmt-add/user-mgmt-add.component';
+import { UserMgmtEditComponent } from './views/user-mgmt-edit/user-mgmt-edit.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +36,8 @@ import { OneColumnLayoutComponent } from './views/layouts/one-column.layout';
     LogoutComponent,
     HeaderComponent,
     OneColumnLayoutComponent,
+    UserMgmtAddComponent,
+    UserMgmtEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,14 +48,22 @@ import { OneColumnLayoutComponent } from './views/layouts/one-column.layout';
     QRCodeModule,
     ZXingScannerModule,
     BrowserAnimationsModule,
-    NbThemeModule.forRoot({ name: 'cosmic' }),
+    NbThemeModule.forRoot({ name: 'default' }),
     NbSidebarModule.forRoot(),
     NbMenuModule.forRoot(),
     NbLayoutModule,
     NbEvaIconsModule,
-    ThemeModule
+    NbButtonModule,
+    NbIconModule,
+    NbSelectModule,
+    NbCardModule,
+    NbInputModule,
+    NbUserModule,
+    NbActionsModule,
+    ThemeModule,
+    FormsModule
   ],
-  providers: [],
+  providers: [authInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

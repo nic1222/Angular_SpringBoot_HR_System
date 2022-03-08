@@ -1,10 +1,46 @@
-<div class="container">
-    <div class="row" *ngFor="let employee of employees">
-        <div class="col-6">
-            {{employee.id}}
-        </div>
-        <div class="col-6">
-            {{employee.name}}
-        </div>
+<nb-card>
+  <div class="row">
+    <h3>User Management</h3>
+  </div>
+  <div class="row">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Email</th>
+          <th scope="col">Username</th>
+          <th scope="col">Role</th>
+          <th scope="col">Edit</th>
+          <th scope="col">Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of userList">
+          <th scope="row">{{ user.id }}</th>
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.role }}</td>
+          <td>
+            <a (click)="editUser(user.username)" class="delete-item">
+              <nb-icon icon="edit-2-outline"></nb-icon>
+            </a>
+          </td>
+          <td>
+            <a (click)="deleteUser(user.username)" class="delete-item">
+              <nb-icon icon="trash-2-outline"></nb-icon>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="row">
+    <div class="col-md-12" style="text-align: center;">
+      <button nbButton medium hero status="primary" routerLink="/user-mgmt-add" >
+        Add User
+      </button>
     </div>
-</div>
+  </div>
+</nb-card>

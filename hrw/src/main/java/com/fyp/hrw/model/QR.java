@@ -11,12 +11,11 @@ public class QR implements Serializable {
     private Long id;
     private String qrInfo;
 
-    public QR() {
+    public QR(String qrInfo) {
+        this.qrInfo = qrInfo;
     }
 
-    public QR(Long id, String qrInfo) {
-        this.id = id;
-        this.qrInfo = qrInfo;
+    public QR() {
     }
 
     public Long getId() {

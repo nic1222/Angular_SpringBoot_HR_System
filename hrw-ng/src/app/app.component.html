@@ -1,4 +1,10 @@
-<ngx-one-column-layout>
-  <nb-menu [items]="menu"></nb-menu>
-  <router-outlet></router-outlet>
-</ngx-one-column-layout>
+<div *ngIf="isLoggedIn">
+  <ngx-one-column-layout>
+    <nb-menu [items]="menu"></nb-menu>
+    <router-outlet></router-outlet>
+  </ngx-one-column-layout>
+</div>
+
+<div *ngIf="!isLoggedIn">
+    <app-login></app-login>
+</div>

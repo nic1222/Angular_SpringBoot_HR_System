@@ -6,6 +6,17 @@
   align-items: center;
   width: calc(#{nb-theme(sidebar-width)} - #{nb-theme(header-padding)});
 }
+
+nb-action {
+  height: auto;
+  display: flex;
+  align-content: center;
+}
+
+nb-user {
+  cursor: pointer;
+}
+
 .header-container {
   display: flex;
   align-items: center;
@@ -24,5 +35,9 @@
     font-size: 1.75rem;
     white-space: nowrap;
     text-decoration: none;
+  }
+
+  .actions {
+    margin-left: auto;
   }
 }

@@ -1,6 +1,7 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { BaseService } from 'src/app/services/base.service';
-import { QrgenrComponent } from '../qrgenr/qrgenr.component';
+import { Component, OnInit } from '@angular/core';
+import { Attendance } from 'src/app/models/attendance.model';
+import { AttendanceService } from 'src/app/services/attendance.service';
+import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 @Component({
   selector: 'app-qrscan',
@@ -10,36 +11,55 @@ import { QrgenrComponent } from '../qrgenr/qrgenr.component';
 export class QrscanComponent implements OnInit {
 
   scannerEnabled: boolean = true;
-  //  transports: Transport[] = [];
   information: string = '';
+  qrToMatch: string = '';
 
   constructor(
-    private cd: ChangeDetectorRef,
-    private baseService: BaseService
+    private attService: AttendanceService,
+    private tokenService: TokenStorageService
   ) { }
 
   ngOnInit(): void {
   }
 
-  public scanSuccessHandler($event: any) {
+  getQRInfo(qr: string) {
+    this.attService.getQR(qr).subscribe({
+      next: response => {
+        console.log("Api get-> " + response.qrInfo);
+        this.matchQR(this.information, response.qrInfo);
+      }, error: e => {
+        alert(e.error);
+      }
+    })
+  }
+
+  matchQR(scan: string, get: string) {
+    if (scan === get) {
+      console.log("Matched.");
+      this.checkIn();
+    } else {
+      alert("Not Matched. Please Try Again.");
+    }
+  }
+
+  checkIn(): void {
+    let att = new Attendance();
+    let currentuser = this.tokenService.getUser();
+    console.log(currentuser.username);
+    att.empId = currentuser.username;
+    this.attService.checkInAtt(att).subscribe({
+      next: response => {
+        alert("Attendance successfully taken.");
+      }, error: e => {
+        alert(e.error);
+      }
+    })
+  }
+
+  scanSuccessHandler($event: any) {
     this.scannerEnabled = false;
     this.information = $event;
-    if (this.baseService.matchQR(this.information)) {
-      this.information = 'Matched.';
-    } else {
-      this.information = 'Not Matched.';
-    }
-    // const appointment = new Appointment($event);
-    // this.logService.logAppointment(appointment).subscribe(
-    //   (result: OperationResponse) => {
-    //     this.information = $event;
-    //     this.transports = result.object;
-    //     this.cd.markForCheck();
-    //   },
-    //   (error: any) => {
-    //     this.information = "An error has occurred please try again...";
-    //     this.cd.markForCheck();
-    //   });
+    this.getQRInfo(this.information);
   }
 
   public enableScanner() {

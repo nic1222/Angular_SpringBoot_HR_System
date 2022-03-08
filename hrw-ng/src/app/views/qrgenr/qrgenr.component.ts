@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { QR } from 'src/app/models/qr.model';
+import { AttendanceService } from 'src/app/services/attendance.service';
 import { BaseService } from 'src/app/services/base.service';
 
 @Component({
@@ -9,21 +11,32 @@ import { BaseService } from 'src/app/services/base.service';
 
 export class QrgenrComponent implements OnInit {
 
-  qrinfo: string = '';
+  qr = new QR();
+  qrInfo: string = '';
 
   constructor(
-    private baseService: BaseService
+    private attService: AttendanceService
   ) { }
 
   ngOnInit(): void {
-    this.random();
-    setInterval(() => { this.random() }, 10000);
+    this.randomQR();
+    // setInterval(() => { this.randomQR() }, 10000);
   }
 
-  random(): void {
-    this.qrinfo = new Date().toLocaleString();
-    this.baseService.setQrInfo(this.qrinfo);
+  randomQR(): void {
+    this.qrInfo = Math.random().toString();
+    this.saveQR(this.qrInfo);
   }
 
+  saveQR(info: string): void {
+    this.qr.qrInfo = info;
+    this.attService.setQR(this.qr).subscribe({
+      next: response => {
+        console.log("Successfully Saved QR");
+      }, error: e => {
+        alert(e.message);
+      }
+    })
+  }
 
 }
