@@ -1,16 +1,6 @@
 import { NbMenuItem } from '@nebular/theme';
 
-export const MENU_ITEMS: NbMenuItem[] = [
-  {
-    title: 'QR Attendance',
-    group: true,
-  },
-  {
-    title: 'QR Scan',
-    icon: 'camera-outline',
-    link: '/qrscan',
-    home: true,
-  },
+export const HR_MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'QR Generator',
     icon: 'grid-outline',
@@ -18,7 +8,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   },
   {
     title: 'User Management',
-    icon: 'keypad-outline',
+    icon: 'people-outline',
     link: '/user-mgmt',
   },
   {
@@ -27,34 +17,41 @@ export const MENU_ITEMS: NbMenuItem[] = [
     link: '/attendance',
   },
   {
-    title: 'Attendance',
-    group: true,
+    title: 'Leave Management',
+    icon: 'layout-outline',
+    link: '/leave',
   },
   {
-    title: 'Layout',
-    icon: 'layout-outline',
+    title: 'Event',
+    icon: 'briefcase-outline',
+    link: '/event',
+  }
+
+];
+
+export const EMP_MENU_ITEMS: NbMenuItem[] = [
+  {
+    title: 'QR Scan',
+    icon: 'camera-outline',
     children: [
       {
-        title: 'Stepper',
-        link: '/pages/layout/stepper',
+        title: 'Clock In',
+        link: '/qrscan',
       },
       {
-        title: 'List',
-        link: '/pages/layout/list',
-      },
-      {
-        title: 'Infinite List',
-        link: '/pages/layout/infinite-list',
-      },
-      {
-        title: 'Accordion',
-        link: '/pages/layout/accordion',
-      },
-      {
-        title: 'Tabs',
-        pathMatch: 'prefix',
-        link: '/pages/layout/tabs',
+        title: 'Clock Out',
+        link: '/qrscan-out',
       },
     ],
   },
+  {
+    title: 'Attendance',
+    icon: 'calendar-outline',
+    link: '/attendance',
+  },
+  {
+    title: 'E-Leave',
+    icon: 'layout-outline',
+    link: '/leave',
+  }
 ];

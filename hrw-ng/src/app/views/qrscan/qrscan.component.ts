@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Attendance } from 'src/app/models/attendance.model';
+import { Attendance, ClockInOutReq } from 'src/app/models/attendance.model';
 import { AttendanceService } from 'src/app/services/attendance.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 
@@ -22,13 +22,12 @@ export class QrscanComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  getQRInfo(qr: string) {
-    this.attService.getQR(qr).subscribe({
+  getQRInfo() {
+    this.attService.getQR().subscribe({
       next: response => {
-        console.log("Api get-> " + response.qrInfo);
-        this.matchQR(this.information, response.qrInfo);
+        this.matchQR(this.information, response[0].qrInfo);
       }, error: e => {
-        alert(e.error);
+        alert("QR code Not Found.");
       }
     })
   }
@@ -43,23 +42,28 @@ export class QrscanComponent implements OnInit {
   }
 
   checkIn(): void {
-    let att = new Attendance();
+    let req = new ClockInOutReq();
     let currentuser = this.tokenService.getUser();
-    console.log(currentuser.username);
-    att.empId = currentuser.username;
-    this.attService.checkInAtt(att).subscribe({
-      next: response => {
-        alert("Attendance successfully taken.");
-      }, error: e => {
-        alert(e.error);
+    req.employeeId = currentuser.id;
+    console.log(req);
+
+    this.attService.checkInAtt(req).subscribe(
+      response => {
+        if (response == null) {
+          alert("Record Existed. You have clocked in already!");
+        } else {
+          alert("Clocked in successfully!");
+        }
+      }, e => {
+        alert(e);
       }
-    })
+    )
   }
 
   scanSuccessHandler($event: any) {
     this.scannerEnabled = false;
     this.information = $event;
-    this.getQRInfo(this.information);
+    this.getQRInfo();
   }
 
   public enableScanner() {

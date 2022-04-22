@@ -1,26 +1,66 @@
 <nb-card>
   <div class="row">
-    <div class="col-12 col-md-8">
-      <nb-select
-        class="form-select"
-        [(ngModel)]="selected"
-        aria-label="Default select example"
-      >
-        <nb-option selected>Open this select menu</nb-option>
-        <nb-option value="1">One</nb-option>
-        <nb-option value="2">Two</nb-option>
-        <nb-option value="3">Three</nb-option>
-      </nb-select>
+    <div class="col-12 col-md-8"></div>
+    <div class="col-6 col-md-4"></div>
+  </div>
+  <div class="row text-center">
+    <div class="col-md-4">
+      <div class="btn-group">
+        <div
+          class="btn btn-primary"
+          mwlCalendarPreviousView
+          [view]="view"
+          [(viewDate)]="viewDate"
+          (viewDateChange)="closeOpenMonthViewDay(viewDate)"
+        >
+          Previous
+        </div>
+        <div
+          class="btn btn-outline-secondary"
+          mwlCalendarToday
+          [(viewDate)]="viewDate"
+          (viewDateChange)="closeOpenMonthViewDay(viewDate)"
+        >
+          Today
+        </div>
+        <div
+          class="btn btn-primary"
+          mwlCalendarNextView
+          [view]="view"
+          [(viewDate)]="viewDate"
+          (viewDateChange)="closeOpenMonthViewDay(viewDate)"
+        >
+          Next
+        </div>
+      </div>
     </div>
-    <div class="col-6 col-md-4">
-      <button nbButton medium hero status="primary">hi</button>
+    <div class="col-md-4 cu-calen-viewdate">
+      <h3>{{ viewDate | calendarDate: view + "ViewTitle":"en" }}</h3>
+    </div>
+    <div class="col-md-4">
+      <span></span>
     </div>
   </div>
   <div class="row">
-    <div class="col-12 col-md-8">
-      {{selected}}
-    </div>
-    <div class="col-6 col-md-4">
+    <div class="col-md-12">
+      <ng-template #loading>
+        <mat-spinner class="m-auto"></mat-spinner>
+        <br />
+        <h4 class="text-center">Loading events...</h4>
+      </ng-template>
+
+      <div *ngIf="events$ | async; else loading; let events">
+        <div [ngSwitch]="view">
+          <mwl-calendar-month-view
+            *ngSwitchCase="CalendarView.Month"
+            [viewDate]="viewDate"
+            [events]="events"
+            [activeDayIsOpen]="activeDayIsOpen"
+            (dayClicked)="dayClicked($event.day)"
+          >
+          </mwl-calendar-month-view>
+        </div>
+      </div>
     </div>
   </div>
 </nb-card>

@@ -6,5 +6,9 @@
 </div>
 
 <div *ngIf="!isLoggedIn">
-    <app-login></app-login>
+  <nb-layout windowMode>
+    <nb-layout-column>
+      <app-login></app-login>
+    </nb-layout-column>
+  </nb-layout>
 </div>

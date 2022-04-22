@@ -10,7 +10,6 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./user-mgmt-add.component.scss']
 })
 export class UserMgmtAddComponent implements OnInit {
-
   username: string = "";
   password: string = "";
   name: string = "";
@@ -21,6 +20,8 @@ export class UserMgmtAddComponent implements OnInit {
   address: string = "";
   role: string = "";
   req = new SignUpReq();
+  isValidSubmit: boolean = true;
+
   constructor(
     private authService: AuthService,
     private router: Router
@@ -30,25 +31,34 @@ export class UserMgmtAddComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
-    this.req.username = this.username;
-    this.req.password = this.password;
-    this.req.name = this.name;
-    this.req.gender = this.gender;
-    this.req.email = this.email;
-    this.req.phone = this.phone;
-    this.req.ic = this.ic;
-    this.req.address = this.address;
-    this.req.role = this.role;
-    this.authService.register(this.req).subscribe(
-      res => {
-        console.log(res);
-        alert("Added Successfully");
-        this.router.navigate(["/user-mgmt"]);
-      },
-      err => {
-        alert(err.message);
-      }
-    )
+    if (form.invalid) {
+      this.isValidSubmit = false;
+    } else {
+      this.isValidSubmit = true;
+      this.req.username = this.username;
+      this.req.password = this.password;
+      this.req.name = this.name;
+      this.req.gender = this.gender;
+      this.req.email = this.email;
+      this.req.phone = this.phone;
+      this.req.ic = this.ic;
+      this.req.address = this.address;
+      this.req.role = this.role;
+      this.authService.register(this.req).subscribe(
+        res => {
+          if (res.message === "New user account created successfully!"){
+            alert(res.message);
+            this.router.navigate(["/user-mgmt"]);
+          }else{
+            alert(res.message);
+          }
+        },
+        err => {
+          alert(err.error.message);
+        }
+      );
+    }
+
   }
 
 }

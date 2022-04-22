@@ -5,10 +5,8 @@ import { SignUpReq } from '../models/signupReq.model';
 import { ApiConfig } from 'src/environments/api-config';
 import { environment } from 'src/environments/environment';
 
-const AUTH_API = environment.apiBaseUrl + '/auth/';
-
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' })
 };
 
 @Injectable({
@@ -18,13 +16,13 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   login(username: string, password: string): Observable<any> {
-    return this.http.post(AUTH_API + 'signin', {
+    return this.http.post(ApiConfig.LOGIN, {
       username,
       password
     }, httpOptions);
   }
 
   register(body: SignUpReq): Observable<any> {
-    return this.http.post(AUTH_API + 'signup', body, httpOptions);
+    return this.http.post(ApiConfig.REGISTER, body, httpOptions);
   }
 }

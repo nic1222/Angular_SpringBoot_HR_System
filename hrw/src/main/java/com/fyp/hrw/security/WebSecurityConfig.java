@@ -16,6 +16,13 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -57,10 +64,32 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/user/**").permitAll()
-//                .antMatchers("/api/user/add").hasAnyAuthority("ROLE_HR","ROLE_ADMIN")
+                .antMatchers("/api/file/download/**").permitAll()
+                .antMatchers("/api/attendance/download/excel").permitAll()
+//                .antMatchers("/api/employee/all").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
+    @Bean
+    public CorsFilter corsFilter() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowCredentials(true);
+//        corsConfiguration.setAllowedOrigins(List.of("*"));
+        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200","https://hrw-ng.azurewebsites.net"));
+//        corsConfiguration.setAllowedOrigins(Arrays.asList("https://hrw-ng.azurewebsites.net"));
+//        corsConfiguration.setAllowedOrigins(Arrays.asList("https://192.168.100.5:4201","https://192.168.100.1:4201","https://192.168.100.54:4201"));
+//        corsConfiguration.setAllowedOrigins(Arrays.asList("https://172.20.10.5:4201","https://172.20.10.1:4201"));
+//        corsConfiguration.setAllowedOrigins(Arrays.asList("https://192.168.1.3:4200","https://192.168.1.1:4200"));
+        corsConfiguration.setAllowedHeaders(Arrays.asList("Origin", "Access-Control-Allow-Origin", "Content-Type",
+                "Accept", "Authorization", "Origin, Accept", "X-Requested-With","responseType",
+                "Access-Control-Request-Method", "Access-Control-Request-Headers", "Content-Disposition"));
+        corsConfiguration.setExposedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization","responseType",
+                "Access-Control-Allow-Origin", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials", "Content-Disposition"));
+        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
+        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
+        return new CorsFilter(urlBasedCorsConfigurationSource);
+    }
+
 }

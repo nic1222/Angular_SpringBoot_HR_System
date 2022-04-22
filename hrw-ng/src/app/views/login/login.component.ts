@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
   password: string = '';
   isLoggedIn = false;
   isLoginFailed = false;
+  isEmptyField = false;
   errorMessage = '';
   roles: string[] = [];
 
@@ -30,10 +31,12 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
+    this.isLoginFailed = false;
     if (form.invalid) {
-      this.formStatus = "invalid";
+      this.isEmptyField = true;
+      this.errorMessage = "Please enter username and password."
     } else {
-      this.formStatus = "valid";
+      this.isEmptyField = false;
       this.authService.login(this.username, this.password).subscribe(
         (response) => {
           this.tokenStorage.saveToken(response.accessToken);
@@ -42,11 +45,13 @@ export class LoginComponent implements OnInit {
           this.isLoginFailed = false;
           this.isLoggedIn = true;
           this.roles = this.tokenStorage.getUser().roles;
+          // this.router.navigate(['/dashboard']);
           this.reloadPage();
-          // this.router.navigate(["/dashboard"]);
         },
         (error: HttpErrorResponse) => {
-          this.errorMessage = error.message;
+          console.log(error);
+          
+          this.errorMessage = "Wrong username or password. Please try again.";
           this.isLoginFailed = true;
         }
       )

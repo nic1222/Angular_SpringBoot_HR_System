@@ -1,0 +1,40 @@
+<nb-card>
+  <div class="row" style="margin: 16px 16px 0 27px;">
+    <h2>Event / Holiday</h2>
+  </div>
+  <div class="row">
+    <div class="table-wrapper-scroll-y my-custom-scrollbar col-md-12">
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">Event id</th>
+            <th scope="col">Event Name</th>
+            <th scope="col">Start Date</th>
+            <th scope="col">End Date</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let e of eventList">
+            <td scope="row">{{ e.id }}</td>
+            <td>{{ e.title }}</td>
+            <td>{{ e.startDate }}</td>
+            <td>{{ e.endDate }}</td>
+            <td>
+              <a (click)="deleteEvent(e.id)" class="view-item">
+                <nb-icon icon="trash-2-outline"></nb-icon>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12" style="text-align: center">
+      <button nbButton medium hero status="primary" routerLink="/event-add">
+        Add Event
+      </button>
+    </div>
+  </div>
+</nb-card>

@@ -1,5 +1,6 @@
-export class User {
-    id: number;
+export class Employee {
+    id: string;
+    username: string;
     password: string;
     name: string;
     gender: string;
@@ -8,5 +9,7 @@ export class User {
     ic: string;
     address:string;
     role: string;
-    username: string;
+    annualLeaveDays: number;
+    sickLeaveDays: number;
+    familyLeaveDays: number;
 }

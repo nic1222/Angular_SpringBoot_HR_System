@@ -6,6 +6,6 @@ export class SignUpReq {
     email: string;
     phone: string;
     ic: string;
-    address:string;
+    address: string;
     role: string;
 }

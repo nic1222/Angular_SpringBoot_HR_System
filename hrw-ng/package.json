@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "start-ssl": "ng serve --host 192.168.100.5 --port 4201 --disable-host-check --proxy-config proxy-secure.conf.json --hmr --ssl true --ssl-cert ssl/data.cert --ssl-key ssl/data.key"
   },
   "private": true,
   "dependencies": {
@@ -17,6 +18,7 @@
     "@angular/core": "~12.0.2",
     "@angular/forms": "~12.0.2",
     "@angular/localize": "~12.0.2",
+    "@angular/material": "^12.2.13",
     "@angular/platform-browser": "~12.0.2",
     "@angular/platform-browser-dynamic": "~12.0.2",
     "@angular/router": "~12.0.2",
@@ -27,10 +29,13 @@
     "@zxing/library": "^0.19.1",
     "@zxing/ngx-scanner": "^3.5.0",
     "ajv": "^6.9.1",
+    "angular-calendar": "^0.29.0",
     "angularx-qrcode": "^12.0.3",
     "bootstrap": "^4.5.0",
+    "date-fns": "^2.28.0",
     "eva-icons": "^1.1.2",
     "jquery": "^1.9.1",
+    "moment": "^2.29.1",
     "popper.js": "^1.16.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.1.0",

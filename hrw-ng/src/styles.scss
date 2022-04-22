@@ -1,5 +1,5 @@
 @import "themes";
-
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
 @import "~@nebular/theme/styles/globals";
 
 @include nb-install() {
@@ -16,4 +16,10 @@
 
 a {
   cursor: pointer;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.error_container{
+  color: #ff0000;
 }

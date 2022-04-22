@@ -1,5 +1,6 @@
 package com.fyp.hrw.payload.request;
 
+import com.fyp.hrw.model.EGender;
 import com.fyp.hrw.model.ERole;
 
 import javax.persistence.Column;
@@ -11,19 +12,17 @@ import java.util.Set;
 public class SignupRequest {
     @NotBlank
     private String username;
-
     @NotBlank
     @Email
     private String email;
     @NotBlank
     private String password;
     private String name;
-    private String gender;
+    private EGender gender;
     private String phone;
     private String ic;
     private String address;
     private ERole role;
-
 
     public String getUsername() {
         return username;
@@ -65,11 +64,11 @@ public class SignupRequest {
         this.name = name;
     }
 
-    public String getGender() {
+    public EGender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(EGender gender) {
         this.gender = gender;
     }
 

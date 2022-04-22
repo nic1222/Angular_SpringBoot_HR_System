@@ -1,13 +1,26 @@
-<nb-card>
-    <div class="row">
-        <div class="col-md-3">
-            <zxing-scanner *ngIf="scannerEnabled" #scanner (scanSuccess)="scanSuccessHandler($event)">
-            </zxing-scanner>
-        </div>
-        <div class="col-md-3">
-            <button (click)="enableScanner()" *ngIf="!scannerEnabled" type="button"
-            class="btn btn-success">Read Other</button>
-            <div>{{information}}</div>
-        </div>
-    </div>
-</nb-card>
+<div class="row">
+  <div class="col-md-2"></div>
+  <div class="col-md-8"></div>
+  <nb-card>
+    <nb-card-header
+      >Please scan the QRcode to clock in attendance</nb-card-header
+    >
+    <nb-card-body>
+      <zxing-scanner
+        *ngIf="scannerEnabled"
+        #scanner
+        (scanSuccess)="scanSuccessHandler($event)"
+      >
+      </zxing-scanner>
+      <button
+        nbButton
+        (click)="enableScanner()"
+        *ngIf="!scannerEnabled"
+        type="button"
+        class="btn btn-success"
+      >
+        Scan Other
+      </button>
+    </nb-card-body>
+  </nb-card>
+</div>

@@ -1,32 +1,42 @@
 package com.fyp.hrw.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
-import java.sql.Timestamp;
 
 @Entity
 public class Attendance implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false, length = 100)
     private Long id;
-    @Column(nullable = false, updatable = false)
-    private String empId;
-    private String leaveId;
+
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "employee_id", nullable = false)
+    private Employee employee;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date date;
     private Time clockIn;
     private Time clockOut;
-    private boolean late;
+    private int workHours;
+    private boolean isLate;
 
-    public Attendance(String empId, String leaveId, Date date, Time clockIn, Time clockOut, boolean late) {
-        this.empId = empId;
-        this.leaveId = leaveId;
+    public Attendance(Employee employee, Date date, Time clockIn, Time clockOut, int workHours, boolean isLate) {
+        this.employee = employee;
         this.date = date;
         this.clockIn = clockIn;
         this.clockOut = clockOut;
-        this.late = late;
+        this.workHours = workHours;
+        this.isLate = isLate;
     }
 
     public Attendance() {
@@ -40,20 +50,20 @@ public class Attendance implements Serializable {
         this.id = id;
     }
 
-    public String getEmpId() {
-        return empId;
+    public Employee getEmployee() {
+        return employee;
     }
 
-    public void setEmpId(String empId) {
-        this.empId = empId;
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
-    public String getLeaveId() {
-        return leaveId;
+    public Date getDate() {
+        return date;
     }
 
-    public void setLeaveId(String leaveId) {
-        this.leaveId = leaveId;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public Time getClockIn() {
@@ -72,19 +82,23 @@ public class Attendance implements Serializable {
         this.clockOut = clockOut;
     }
 
+    public boolean isIsLate() {
+        return isLate;
+    }
+
     public boolean isLate() {
-        return late;
+        return isLate;
     }
 
-    public void setLate(boolean late) {
-        this.late = late;
+    public void setIsLate(boolean late) {
+        this.isLate = late;
     }
 
-    public Date getDate() {
-        return date;
+    public int getWorkHours() {
+        return workHours;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setWorkHours(int workHours) {
+        this.workHours = workHours;
     }
 }

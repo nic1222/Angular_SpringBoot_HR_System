@@ -1,0 +1,200 @@
+<nb-card>
+  <div class="row" style="margin: 16px 16px 0 27px;" *ngIf="!isEmployee">
+    <h2>Leave Management</h2>
+  </div>
+  <div class="row" style="margin: 16px 16px 0 27px;" *ngIf="isEmployee">
+    <h2>E-Leave</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-12 table-wrapper-scroll-y my-custom-scrollbar">
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">Leave id</th>
+            <th scope="col">Employee Name</th>
+            <th scope="col">Leave Type</th>
+            <th scope="col">From</th>
+            <th scope="col">To</th>
+            <th scope="col">Status</th>
+            <th scope="col">View Detail</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let l of leaveList">
+            <th scope="row">{{ l.id }}</th>
+            <td>{{ l.employee.name }}</td>
+            <td>{{ l.type }}</td>
+            <td>{{ l.dateFrom }}</td>
+            <td>{{ l.dateTo }}</td>
+            <td>{{ l.status }}</td>
+            <td>
+              <a (click)="open(content, l.id)" class="view-item">
+                <nb-icon icon="book-open-outline"></nb-icon>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12" *ngIf="isEmployee" style="text-align: center">
+      <button nbButton medium hero status="primary" routerLink="/leave-add">
+        Add Leave
+      </button>
+    </div>
+  </div>
+</nb-card>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Leave Details</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss()"
+    >
+      <nb-icon icon="close-outline"></nb-icon>
+    </button>
+  </div>
+  <div *ngIf="!isEmployee">
+    <div class="modal-body">
+      <form>
+        <div class="mb-1">
+          <label for="leaveId">Leave Id: {{ toViewLeave.id }}</label>
+        </div>
+        <div class="mb-1">
+          <label for="dateTo">Leave Type: {{ toViewLeave.type }}</label>
+        </div>
+        <div class="mb-1">
+          <label for="name"
+            >Employee Name: {{ toViewLeave.employee.name }}</label
+          >
+        </div>
+        <div class="mb-1">
+          <label for="dateFrom">Date From: {{ toViewLeave.dateFrom }}</label>
+        </div>
+        <div class="mb-1">
+          <label for="dateTo">Date To: {{ toViewLeave.dateTo }}</label>
+        </div>
+        <div class="mb-1">
+          <label for="dateTo"
+            >Duration: {{ toViewLeave.duration }} day(s)</label
+          >
+        </div>
+        <div class="mb-1">
+          <label for="dateTo"
+            >Leave Reason: {{ toViewLeave.leaveReason }}</label
+          >
+        </div>
+        <div class="mb-1">
+          <label for="file">Uploaded File:</label>
+          <button nbButton size="small" ghost>
+            <a href="{{ currentFileUrl }}">{{ toViewLeave.filename }}</a>
+          </button>
+        </div>
+        <div class="mb-2">
+          <label for="denyReason">Deny Reason: </label>
+          <div class="input-group">
+            <input
+              type="text"
+              nbInput
+              fullWidth
+              [(ngModel)]="denyReason"
+              #denyReasonInput="ngModel"
+              name="denyReason"
+              id="denyReason"
+              placeholder=""
+              required
+            />
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button
+        nbButton
+        hero
+        size="small"
+        status="success"
+        (click)="approveLeave(toViewLeave.id)"
+      >
+        Approve
+      </button>
+      <button
+        nbButton
+        hero
+        size="small"
+        status="danger"
+        (click)="denyLeave(toViewLeave.id)"
+      >
+        Deny
+      </button>
+      <button nbButton hero size="small" (click)="modal.close('Close')">
+        Close
+      </button>
+    </div>
+  </div>
+  <div *ngIf="isEmployee">
+    <div class="modal-body">
+      <form>
+        <div class="mb-1">
+          <label for="leaveId">Leave Id: {{ toViewLeave.id }}</label>
+        </div>
+        <div class="mb-1">
+          <label for="dateTo">Leave Type: {{ toViewLeave.type }}</label>
+        </div>
+        <div class="mb-1">
+          <label for="name"
+            >Employee Name: {{ toViewLeave.employee.name }}</label
+          >
+        </div>
+        <div class="mb-1">
+          <label for="dateFrom">Date From: {{ toViewLeave.dateFrom }}</label>
+        </div>
+        <div class="mb-1">
+          <label for="dateTo">Date To: {{ toViewLeave.dateTo }}</label>
+        </div>
+        <div class="mb-1">
+          <label for="dateTo"
+            >Duration: {{ toViewLeave.duration }} day(s)</label
+          >
+        </div>
+        <div class="mb-1">
+          <label for="dateTo"
+            >Leave Reason: {{ toViewLeave.leaveReason }}</label
+          >
+        </div>
+        <div class="mb-1">
+          <label for="denyReason"
+            >Deny Reason: {{ toViewLeave.deniedReason }}
+          </label>
+          <span *ngIf="!toViewLeave.deniedReason">-</span>
+        </div>
+        <div class="mb-2">
+          <label for="file">Uploaded File:</label>
+          <button nbButton size="small" ghost *ngIf="toViewLeave.filename">
+            <a href="{{ currentFileUrl }}">{{ toViewLeave.filename }}</a>
+          </button>
+          <span *ngIf="!toViewLeave.filename">-</span>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button
+        *ngIf="toViewLeave.status === 'PENDING'"
+        nbButton
+        hero
+        size="small"
+        status="danger"
+        (click)="deleteLeave(toViewLeave.id)"
+      >
+        Cancel
+      </button>
+      <button nbButton hero size="small" (click)="modal.close('Close')">
+        Close
+      </button>
+    </div>
+  </div>
+</ng-template>

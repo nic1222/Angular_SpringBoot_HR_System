@@ -1,0 +1,225 @@
+<div class="row">
+  <div class="col-md-2"></div>
+  <div class="col-md-8">
+    <nb-card>
+      <nb-card-header>Edit Leave Request</nb-card-header>
+      <nb-card-body>
+        <form
+          #addForm="ngForm"
+          class="form-horizontal"
+          (ngSubmit)="onSubmit(addForm)"
+        >
+          <div class="form-group row">
+            <label for="reason" class="label col-sm-3 form-control-label"
+              >Leave Id: </label
+            >
+            <div class="col-sm-9">
+              <input
+                type="text"
+                nbInput
+                fullWidth
+                [(ngModel)]="toEditLeave.id"
+                name="id"
+                id="id"
+                readonly
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="reason" class="label col-sm-3 form-control-label"
+              >Employee Name: </label
+            >
+            <div class="col-sm-9">
+              <input
+                type="text"
+                nbInput
+                fullWidth
+                [(ngModel)]="toEditLeave.employee.name"
+                name="name"
+                id="name"
+                readonly
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="type" class="label col-sm-3 form-control-label"
+              >Leave Type</label
+            >
+            <nb-select
+              class="form-select col-sm-9"
+              [(ngModel)]="toEditLeave.type"
+              #typeInput="ngModel"
+              name="type"
+              id="type"
+              aria-label="Default select example"
+              required
+            >
+              <nb-option readonly>Select a Type</nb-option>
+              <nb-option value="Annual Leave">Annual Leave</nb-option>
+              <nb-option value="Sick Leave">Sick Leave</nb-option>
+              <nb-option value="Family Leave">Family Leave</nb-option>
+            </nb-select>
+          </div>
+          <div
+            class="form-group row"
+            *ngIf="typeInput.invalid && (typeInput.touched || typeInput.dirty)"
+          >
+            <div class="col-sm-3 vertical-center">
+              <span></span>
+            </div>
+            <div class="col-sm-9 vertical-center error_container">
+              <span *ngIf="typeInput.errors?.required">
+                Leave type is required.
+              </span>
+            </div>
+          </div>
+
+          <div class="form-group row" appearance="fill">
+            <label for="leaveDate" class="label col-sm-3 form-control-label"
+              >Leave Date (From)</label
+            >
+            <div class="col-sm-9">
+              <mat-form-field appearance="fill">
+                <mat-label>Choose a date</mat-label>
+                <input
+                  matInput
+                  [matDatepickerFilter]="myFilter"
+                  [matDatepicker]="picker"
+                  name="dateFrom"
+                  #dateFromInput="ngModel"
+                  [(ngModel)]="dateFrom"
+                  placeholder="Start date"
+                  required
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <div
+                  class="form-group row"
+                  *ngIf="dateFromInput.hasError('matStartDateInvalid')"
+                >
+                  Invalid date
+                </div>
+              </mat-form-field>
+            </div>
+          </div>
+          <div
+            class="form-group row"
+            *ngIf="
+              dateFromInput.invalid &&
+              (dateFromInput.touched || dateFromInput.dirty)
+            "
+          >
+            <div class="col-sm-3 vertical-center">
+              <span></span>
+            </div>
+            <div class="col-sm-9 vertical-center error_container">
+              <span *ngIf="dateFromInput.errors?.required">
+                Leave date is required.
+              </span>
+            </div>
+          </div>
+
+          <div class="form-group row" appearance="fill">
+            <label for="leavDate" class="label col-sm-3 form-control-label"
+              >Leave Date (To)</label
+            >
+            <div class="col-sm-9">
+              <mat-form-field appearance="fill">
+                <mat-label>Choose a date</mat-label>
+                <input
+                  matInput
+                  [min]="dateFrom"
+                  [matDatepickerFilter]="myFilter"
+                  [matDatepicker]="picker1"
+                  name="dateTo"
+                  #dateToInput="ngModel"
+                  [(ngModel)]="dateTo"
+                  placeholder="End date"
+                  required
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="picker1"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+                <div
+                  class="form-group row"
+                  *ngIf="dateToInput.hasError('matStartDateInvalid')"
+                >
+                  Invalid date
+                </div>
+              </mat-form-field>
+            </div>
+          </div>
+          <div
+            class="form-group row"
+            *ngIf="
+              dateToInput.invalid && (dateToInput.touched || dateToInput.dirty)
+            "
+          >
+            <div class="col-sm-3 vertical-center">
+              <span></span>
+            </div>
+            <div class="col-sm-9 vertical-center error_container">
+              <span *ngIf="dateToInput.errors?.required">
+                Leave date is required.
+              </span>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="reason" class="label col-sm-3 form-control-label"
+              >Leave Reason</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="text"
+                nbInput
+                fullWidth
+                [(ngModel)]="toEditLeave.leaveReason"
+                #reasonInput="ngModel"
+                name="reason"
+                id="reason"
+                placeholder="Reason"
+                required
+              />
+            </div>
+          </div>
+          <div
+            class="form-group row"
+            *ngIf="
+              reasonInput.invalid && (reasonInput.touched || reasonInput.dirty)
+            "
+          >
+            <div class="col-sm-3 vertical-center">
+              <span></span>
+            </div>
+            <div class="col-sm-9 vertical-center error_container">
+              <span *ngIf="reasonInput.errors?.required">
+                Leave reason is required.
+              </span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="offset-sm-3 col-sm-9">
+              <button
+                type="submit"
+                nbButton
+                status="warning"
+                [disabled]="addForm.invalid"
+              >
+                Save CHanges
+              </button>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+  <div class="col-md-2"></div>
+</div>

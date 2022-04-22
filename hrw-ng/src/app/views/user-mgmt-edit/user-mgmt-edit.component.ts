@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from 'src/app/models/user.model';
+import { Employee } from 'src/app/models/user.model';
+import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -10,20 +11,45 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class UserMgmtEditComponent implements OnInit {
 
+  isEmployee: boolean = false;
   password: string = '';
-  user = new User();
+  user = new Employee();
 
   constructor(
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private tokenService: TokenStorageService,
   ) { }
 
   ngOnInit(): void {
-    this.user = this.userService.getToEditUser();
+    this.checkUserRole();
+    if (this.isEmployee) {
+      this.getUserDetail();
+    } else {
+      this.user = this.userService.getToEditUser();
+    }
+  }
+
+  checkUserRole(): void {
+    this.tokenService.getUser().roles[0] === "ROLE_EMP" ? this.isEmployee = true : this.isEmployee = false;
+  }
+
+  getUserDetail() {
+    this.userService.getUser(this.tokenService.getUser().id).subscribe(
+      (res: Employee) => {
+        console.log(res);
+        this.user = res;
+      },
+      err => {
+        alert(err.message);
+      }
+    )
   }
 
   onSubmit(): void {
     this.user.password = this.password;
+    console.log(this.user);
+
     this.userService.updateUser(this.user).subscribe(
       res => {
         console.log(res);

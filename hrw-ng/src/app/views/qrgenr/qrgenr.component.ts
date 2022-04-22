@@ -13,19 +13,38 @@ export class QrgenrComponent implements OnInit {
 
   qr = new QR();
   qrInfo: string = '';
+  hideQR: boolean = true;
+  timer: any;
 
   constructor(
     private attService: AttendanceService
   ) { }
 
   ngOnInit(): void {
-    this.randomQR();
-    // setInterval(() => { this.randomQR() }, 10000);
   }
 
   randomQR(): void {
     this.qrInfo = Math.random().toString();
     this.saveQR(this.qrInfo);
+  }
+
+  startQR() {
+    this.hideQR = false;
+    this.randomQR();
+    // this.timer = setInterval(() => { this.randomQR() }, 20000);
+  }
+
+  stopQR() {
+    this.hideQR = true;
+    clearInterval(this.timer);
+    this.attService.stopQR().subscribe(
+      res => {
+        alert("QR Attendance Stop");
+      },
+      err => {
+        console.log(err);
+      }
+    );
   }
 
   saveQR(info: string): void {

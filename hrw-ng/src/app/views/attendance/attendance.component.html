@@ -1,0 +1,55 @@
+<nb-card>
+  <div class="row" style="margin: 16px 16px 0 27px;">
+    <h2>Attendance</h2>
+  </div>
+  <!-- <div class="row">
+    <div class="col-sm-3">
+      <input
+        type="text"
+        nbInput
+        [(ngModel)]="searchString"
+        name="search"
+        id="search"
+        placeholder="Search date"
+      />
+    </div>
+  </div> -->
+  <div class="row">
+    <div class="row" *ngIf="!isEmployee">
+      <div class="col-md-12 box" style="text-align: center">
+        <button nbButton medium hero status="success">
+          <a href="http://localhost:8080/api/attendance/download/excel"
+            >Download Excel</a
+          >
+        </button>
+      </div>
+    </div>
+    <div class="table-wrapper-scroll-y my-custom-scrollbar col-md-12">
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Employee Name</th>
+            <th scope="col">In Time(hh:mm:ss)</th>
+            <th scope="col">Out Time(hh:mm:ss)</th>
+            <th scope="col" *ngIf="!isEmployee">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let att of attList | filter: searchString:'date'">
+            <th scope="row">{{ att.date }}</th>
+            <td>{{ att.employee.name }}</td>
+            <td>{{ att.clockIn }}</td>
+            <td *ngIf="att.clockOut">{{ att.clockOut }}</td>
+            <td *ngIf="!att.clockOut">-</td>
+            <td *ngIf="!isEmployee">
+              <a (click)="deleteAtt(att.id)" class="view-item">
+                <nb-icon icon="trash-2-outline"></nb-icon>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</nb-card>

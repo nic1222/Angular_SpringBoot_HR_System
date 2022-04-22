@@ -9,6 +9,8 @@ public class QR implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, updatable = false)
     private Long id;
+
+    @Column(nullable = false)
     private String qrInfo;
 
     public QR(String qrInfo) {

@@ -1,14 +1,15 @@
 package com.fyp.hrw.controller;
 
-import com.fyp.hrw.model.User;
+import com.fyp.hrw.model.Employee;
 import com.fyp.hrw.payload.request.LoginRequest;
 import com.fyp.hrw.payload.request.SignupRequest;
 import com.fyp.hrw.payload.response.JwtResponse;
 import com.fyp.hrw.payload.response.MessageResponse;
-import com.fyp.hrw.repo.IUserRepo;
+import com.fyp.hrw.repo.EmployeeRepo;
 import com.fyp.hrw.security.jwt.JwtUtils;
 import com.fyp.hrw.security.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,7 +30,7 @@ public class AuthController {
     AuthenticationManager authenticationManager;
 
     @Autowired
-    IUserRepo iUserRepo;
+    EmployeeRepo employeeRepo;
 
     @Autowired
     PasswordEncoder encoder;
@@ -54,26 +55,26 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
+                userDetails.getName(),
                 userDetails.getEmail(),
                 roles));
     }
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        if (iUserRepo.existsByUsername(signUpRequest.getUsername())) {
+        if (employeeRepo.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
-                    .badRequest()
+                    .status(HttpStatus.OK)
                     .body(new MessageResponse("Error: Username is already taken!"));
         }
-
-        if (iUserRepo.existsByEmail(signUpRequest.getEmail())) {
+        if (employeeRepo.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
-                    .badRequest()
+                    .status(HttpStatus.OK)
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
 
         // Create new user's account
-        User user = new User(signUpRequest.getUsername(),
+        Employee employee = new Employee(signUpRequest.getUsername(),
                 encoder.encode(signUpRequest.getPassword()),
                 signUpRequest.getName(),
                 signUpRequest.getGender(),
@@ -81,10 +82,9 @@ public class AuthController {
                 signUpRequest.getPhone(),
                 signUpRequest.getIc(),
                 signUpRequest.getAddress(),
-                signUpRequest.getRole());
+                signUpRequest.getRole(), 0, 0, 0);
+        employeeRepo.save(employee);
 
-        iUserRepo.save(user);
-
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        return ResponseEntity.ok(new MessageResponse("New user account created successfully!"));
     }
 }

@@ -1,7 +1,7 @@
 package com.fyp.hrw.security.services;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fyp.hrw.model.User;
+import com.fyp.hrw.model.Employee;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,41 +10,40 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class UserDetailsImpl  implements UserDetails {
     private static final long serialVersionUID = 1L;
 
     private Long id;
-
     private String username;
-
     private String email;
+    private String name;
 
     @JsonIgnore
     private String password;
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(Long id, String username, String email, String password,
-                           Collection<? extends GrantedAuthority> authorities) {
+    public UserDetailsImpl(Long id, String username, String email, String name, String password, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.email = email;
+        this.name = name;
         this.password = password;
         this.authorities = authorities;
     }
 
-    public static UserDetailsImpl build(User user) {
-        GrantedAuthority authority = new SimpleGrantedAuthority(user.getRole().toString());
+    public static UserDetailsImpl build(Employee employee) {
+        GrantedAuthority authority = new SimpleGrantedAuthority(employee.getRole().toString());
         List<GrantedAuthority> authorities= new ArrayList<>();
         authorities.add(authority);
 
         return new UserDetailsImpl(
-                user.getId(),
-                user.getUsername(),
-                user.getEmail(),
-                user.getPassword(),
+                employee.getId(),
+                employee.getUsername(),
+                employee.getEmail(),
+                employee.getName(),
+                employee.getPassword(),
                 authorities);
     }
 
@@ -69,6 +68,10 @@ public class UserDetailsImpl  implements UserDetails {
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override
